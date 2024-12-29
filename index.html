@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Meal Plan - Day Ingredients (Extended)</title>
+  <title>Meal Plan - 7-Day Week (Day Ingredients Feature)</title>
   <!-- Quill Snow Theme -->
   <link
     href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
@@ -182,9 +182,9 @@
     }
     .modal-content {
       background: #fff;
-      width: 90%;        
-      max-width: 90%;    
-      max-height: 90%;   
+      width: 90%;
+      max-width: 90%;
+      max-height: 90%;
       overflow-y: auto;
       border-radius: 8px;
       padding: 20px;
@@ -267,7 +267,7 @@
   <!-- Toggle Night Mode Button -->
   <button id="theme-toggle">Toggle Night Mode</button>
 
-  <h1>Meal Plan - Day Ingredients (5 Days Each Week)</h1>
+  <h1>Meal Plan - 7 Days in Each Week</h1>
 
   <!-- Tabs -->
   <div class="tabs">
@@ -275,7 +275,7 @@
     <button class="tab" data-tab="week2">Week 2</button>
   </div>
 
-  <!-- Week 1 Container -->
+  <!-- Week 1 Table Container -->
   <div id="week1" class="table-container active">
     <table>
       <thead>
@@ -290,7 +290,7 @@
     </table>
   </div>
 
-  <!-- Week 2 Container -->
+  <!-- Week 2 Table Container -->
   <div id="week2" class="table-container">
     <table>
       <thead>
@@ -305,7 +305,7 @@
     </table>
   </div>
 
-  <!-- MODAL: Day Ingredients (when user clicks the "day" cell) -->
+  <!-- Day Ingredients Modal -->
   <div id="day-modal" class="modal">
     <div class="modal-content">
       <button class="close-btn" onclick="closeDayModal()">✖</button>
@@ -314,7 +314,7 @@
     </div>
   </div>
 
-  <!-- MODAL: Recipe (view mode) -->
+  <!-- Recipe Modal (view) -->
   <div id="recipe-modal" class="modal">
     <div class="modal-content">
       <button class="close-btn" onclick="closeModal()">✖</button>
@@ -324,7 +324,7 @@
     </div>
   </div>
 
-  <!-- MODAL: Edit (Quill Editor) -->
+  <!-- Edit Modal (Quill) -->
   <div id="edit-modal" class="modal">
     <div class="modal-content">
       <button class="close-btn" onclick="closeEditModal()">✖</button>
@@ -355,12 +355,8 @@
     /***********************************************************
      * 1. Data + localStorage
      **********************************************************/
-    let mealPlanData = JSON.parse(localStorage.getItem('mealPlanData')) || getDefaultData();
-
-    // 
-    // Add Monday through Friday for each week for demonstration
-    //
-    function getDefaultData() {
+    // We'll use your 7-day per week function here:
+    function getDefaultMealPlanData() {
       return {
         week1: [
           {
@@ -368,20 +364,57 @@
             breakfast: {
               meal: "Cereal + Fruits",
               difficulty: "VE",
-              recipe: "<h2>Ingredients</h2><ul><li>Cereal</li><li>Milk</li><li>Fruits</li></ul><p>Combine and enjoy!</p>",
-              ingredients: ["1 cup cereal", "1/2 cup milk", "1/2 cup fruits"]
+              recipe: `
+                <strong>Ingredients:</strong>
+                <ul>
+                  <li>Cereal</li>
+                  <li>Milk</li>
+                  <li>Fruits</li>
+                </ul>
+                <strong>Steps:</strong>
+                <ol>
+                  <li>Add cereal to bowl.</li>
+                  <li>Pour milk over it.</li>
+                  <li>Top with fruits.</li>
+                </ol>
+              `
             },
             lunch: {
               meal: "Tomato curry with rice",
               difficulty: "E",
-              recipe: "<p><strong>Tomato curry steps</strong> here...</p>",
-              ingredients: ["3 tomatoes", "1 onion", "2 cups cooked rice"]
+              recipe: `
+                <strong>Ingredients:</strong>
+                <ul>
+                  <li>3 tomatoes, chopped</li>
+                  <li>1 onion, chopped</li>
+                  <li>Spices: turmeric, chili, salt</li>
+                  <li>Oil/ghee</li>
+                </ul>
+                <strong>Steps:</strong>
+                <ol>
+                  <li>Sauté onions, then add tomatoes & spices.</li>
+                  <li>Cook until tomatoes break down.</li>
+                  <li>Serve with rice.</li>
+                </ol>
+              `
             },
             dinner: {
               meal: "Upma",
               difficulty: "E",
-              recipe: "<p>Basic Upma recipe text</p>",
-              ingredients: ["1 cup semolina", "1 onion", "mustard seeds"]
+              recipe: `
+                <strong>Ingredients:</strong>
+                <ul>
+                  <li>1 cup semolina</li>
+                  <li>1 onion</li>
+                  <li>Mustard seeds, curry leaves</li>
+                </ul>
+                <strong>Steps:</strong>
+                <ol>
+                  <li>Roast semolina; set aside.</li>
+                  <li>Sauté onions with seeds & leaves.</li>
+                  <li>Add water, semolina, stir to cook.</li>
+                </ol>
+              `
             }
           },
           {
@@ -389,20 +422,40 @@
             breakfast: {
               meal: "Idli",
               difficulty: "M",
-              recipe: "<p>Idli instructions or tips</p>",
-              ingredients: ["idli batter", "oil for greasing"]
+              recipe: `
+                <strong>Ingredients:</strong>
+                <ul>
+                  <li>Idli batter</li>
+                </ul>
+                <strong>Steps:</strong>
+                <ol>
+                  <li>Pour batter into idli molds.</li>
+                  <li>Steam for ~10 minutes.</li>
+                </ol>
+              `
             },
             lunch: {
               meal: "Vegetable fried rice",
               difficulty: "E",
-              recipe: "<ul><li>Cook rice</li><li>Stir-fry veggies</li><li>Add soy sauce</li></ul>",
-              ingredients: ["2 cups cooked rice", "mixed veggies", "soy sauce"]
+              recipe: `
+                <strong>Ingredients:</strong>
+                <ul>
+                  <li>2 cups cooked rice</li>
+                  <li>Mixed veggies</li>
+                  <li>Soy sauce</li>
+                </ul>
+                <strong>Steps:</strong>
+                <ol>
+                  <li>Stir-fry veggies, add rice & sauce.</li>
+                </ol>
+              `
             },
             dinner: {
               meal: "Idli",
               difficulty: "M",
-              recipe: "<p>Idli repeated for dinner</p>",
-              ingredients: ["idli batter"]
+              recipe: `
+                (Same as Idli above)
+              `
             }
           },
           {
@@ -410,62 +463,192 @@
             breakfast: {
               meal: "Poha",
               difficulty: "E",
-              recipe: "<p>Poha recipe... rinse poha and sauté with spices.</p>",
-              ingredients: ["1 cup poha", "onions", "peanuts"]
+              recipe: `
+                <strong>Ingredients:</strong>
+                <ul>
+                  <li>1 cup flattened rice (poha)</li>
+                  <li>Onion, peanuts</li>
+                  <li>Spices</li>
+                </ul>
+                <strong>Steps:</strong>
+                <ol>
+                  <li>Rinse poha.</li>
+                  <li>Sauté onion & peanuts, add poha & spices.</li>
+                </ol>
+              `
             },
             lunch: {
-              meal: "Dal Tadka",
-              difficulty: "E",
-              recipe: "<p>Dal Tadka recipe... boil lentils, add tadka of spices.</p>",
-              ingredients: ["1 cup toor dal", "garlic", "spices"]
+              meal: "Palak paneer with roti",
+              difficulty: "M",
+              recipe: `
+                <strong>Ingredients:</strong>
+                <ul>
+                  <li>200g paneer</li>
+                  <li>Spinach puree</li>
+                </ul>
+                <strong>Steps:</strong>
+                <ol>
+                  <li>Sauté onion, tomato, add spinach puree & paneer.</li>
+                  <li>Serve with roti.</li>
+                </ol>
+              `
             },
             dinner: {
-              meal: "Roti & Mixed Veg Curry",
-              difficulty: "M",
-              recipe: "<p>Make dough for rotis, sauté mixed veggies.</p>",
-              ingredients: ["2 cups wheat flour", "mixed veggies", "spices"]
+              meal: "Dosa with sambar",
+              difficulty: "T",
+              recipe: `
+                <strong>Ingredients:</strong>
+                <ul>
+                  <li>Dosa batter</li>
+                  <li>Sambar</li>
+                </ul>
+                <strong>Steps:</strong>
+                <ol>
+                  <li>Spread dosa batter on hot pan.</li>
+                  <li>Cook till crisp, serve with sambar.</li>
+                </ol>
+              `
             }
           },
           {
             day: "Thursday",
             breakfast: {
-              meal: "Bread Omelette",
-              difficulty: "M",
-              recipe: "<p>Beat eggs, dip bread, cook on a pan.</p>",
-              ingredients: ["2 eggs", "2 slices bread", "oil/butter"]
+              meal: "Bread and peanut butter",
+              difficulty: "VE",
+              recipe: `
+                <strong>Ingredients:</strong>
+                <ul>
+                  <li>2 slices bread</li>
+                  <li>Peanut butter</li>
+                </ul>
+                <strong>Steps:</strong>
+                <ol>
+                  <li>Spread peanut butter on bread.</li>
+                </ol>
+              `
             },
             lunch: {
-              meal: "Chickpea Salad",
-              difficulty: "VE",
-              recipe: "<p>Mix boiled chickpeas with chopped veggies.</p>",
-              ingredients: ["1 cup boiled chickpeas", "tomato", "cucumber"]
+              meal: "Tamarind rice + Aloo fry",
+              difficulty: "E",
+              recipe: `
+                <strong>Tamarind Rice:</strong>
+                <ol>
+                  <li>Mix tamarind paste with rice & spices.</li>
+                </ol>
+                <strong>Aloo Fry:</strong>
+                <ol>
+                  <li>Fry potato cubes with spices.</li>
+                </ol>
+              `
             },
             dinner: {
-              meal: "Paneer Butter Masala & Naan",
+              meal: "Beetroot curry with rice",
               difficulty: "M",
-              recipe: "<p>Paneer cubes simmered in tomato-cream sauce.</p>",
-              ingredients: ["200g paneer", "tomatoes", "cream"]
+              recipe: `
+                <strong>Ingredients:</strong>
+                <ul>
+                  <li>Beetroots diced</li>
+                  <li>Onion, spices</li>
+                </ul>
+                <strong>Steps:</strong>
+                <ol>
+                  <li>Sauté onion, add beets & cook till tender.</li>
+                  <li>Serve with rice.</li>
+                </ol>
+              `
             }
           },
           {
             day: "Friday",
             breakfast: {
-              meal: "Upma or Dosa",
-              difficulty: "E",
-              recipe: "<p>Use leftover upma or dosa batter from earlier in the week.</p>",
-              ingredients: ["semolina or dosa batter"]
+              meal: "Starbucks pesto sandwich",
+              difficulty: "VE",
+              recipe: `
+                <strong>DIY:</strong> Spread pesto on bread, add cheese & veggies, toast if desired.
+              `
             },
             lunch: {
-              meal: "Egg Curry & Rice",
+              meal: "Egg curry with rice",
               difficulty: "E",
-              recipe: "<p>Boil eggs, make curry with onions/tomatoes/spices.</p>",
-              ingredients: ["4 eggs", "1 onion", "1 tomato"]
+              recipe: `
+                <strong>Ingredients:</strong>
+                <ul>
+                  <li>Boiled eggs</li>
+                  <li>Onion, tomato, spices</li>
+                </ul>
+                <strong>Steps:</strong>
+                <ol>
+                  <li>Sauté onion, tomato, spices.</li>
+                  <li>Add eggs, simmer.</li>
+                </ol>
+              `
             },
             dinner: {
-              meal: "Tamarind Rice",
+              meal: "Pizza",
+              difficulty: "VE",
+              recipe: `
+                <strong>Ingredients:</strong>
+                <ul>
+                  <li>Pizza base</li>
+                  <li>Tomato sauce, cheese, toppings</li>
+                </ul>
+                <strong>Steps:</strong>
+                <ol>
+                  <li>Assemble & bake until cheese melts.</li>
+                </ol>
+              `
+            }
+          },
+          {
+            day: "Saturday",
+            breakfast: {
+              meal: "Protein shake + Avocado toast",
+              difficulty: "VE",
+              recipe: `
+                <strong>Protein Shake:</strong> Blend protein powder, milk, banana.
+                <strong>Avocado Toast:</strong> Mash avocado, spread on toast.
+              `
+            },
+            lunch: {
+              meal: "Pasta + Carrot fry",
               difficulty: "E",
-              recipe: "<p>Mix tamarind paste with spices into cooked rice.</p>",
-              ingredients: ["cooked rice", "tamarind paste", "spices"]
+              recipe: `
+                <strong>Pasta:</strong> Boil pasta, add sauce.
+                <strong>Carrot fry:</strong> Sauté carrots with spices.
+              `
+            },
+            dinner: {
+              meal: "Pickle rice + Sorakaya pachadi",
+              difficulty: "VE",
+              recipe: `
+                <strong>Pickle Rice:</strong> Mix pickle into rice.
+                <strong>Sorakaya Pachadi:</strong> Cook bottle gourd & blend with spices.
+              `
+            }
+          },
+          {
+            day: "Sunday",
+            breakfast: {
+              meal: "Upma or Dosa",
+              difficulty: "E",
+              recipe: `
+                For Upma or Dosa, see earlier recipes.
+              `
+            },
+            lunch: {
+              meal: "Palak pappu + Bhindi curry with rice",
+              difficulty: "M",
+              recipe: `
+                <strong>Palak pappu:</strong> Cook lentils with spinach, temper.
+                <strong>Bhindi curry:</strong> Sauté okra with onions & spices.
+              `
+            },
+            dinner: {
+              meal: "Dosa with sambar",
+              difficulty: "T",
+              recipe: `
+                (See Wednesday dinner's Dosa recipe.)
+              `
             }
           }
         ],
@@ -473,22 +656,32 @@
           {
             day: "Monday",
             breakfast: {
-              meal: "Bread & Peanut Butter",
+              meal: "Bread and peanut butter",
               difficulty: "VE",
-              recipe: "<p>Spread peanut butter on bread</p>",
-              ingredients: ["2 slices bread", "peanut butter"]
+              recipe: `
+                (Same as above bread & peanut butter)
+              `
             },
             lunch: {
               meal: "Aloo tomato with rice",
               difficulty: "E",
-              recipe: "<p>Cook potatoes with tomatoes</p>",
-              ingredients: ["2 potatoes", "2 tomatoes", "2 cups rice"]
+              recipe: `
+                <strong>Ingredients:</strong>
+                <ul>
+                  <li>Potatoes & tomatoes</li>
+                </ul>
+                <strong>Steps:</strong>
+                <ol>
+                  <li>Sauté potatoes, add tomatoes & spices.</li>
+                </ol>
+              `
             },
             dinner: {
               meal: "Vegetable fried rice",
               difficulty: "E",
-              recipe: "<p>Fried rice again for dinner</p>",
-              ingredients: ["2 cups cooked rice", "veggies", "spices"]
+              recipe: `
+                (Same as Vegetable fried rice)
+              `
             }
           },
           {
@@ -496,94 +689,185 @@
             breakfast: {
               meal: "Poha",
               difficulty: "E",
-              recipe: "<p>Rinse Poha, saute with spices, done!</p>",
-              ingredients: ["1 cup poha", "onion", "peanuts"]
+              recipe: `
+                (See Wednesday breakfast in Week 1)
+              `
             },
             lunch: {
               meal: "Egg curry with rice",
               difficulty: "E",
-              recipe: "<p>Egg curry recipe text</p>",
-              ingredients: ["4 eggs", "1 onion", "1 tomato", "2 cups rice"]
+              recipe: `
+                (See Friday lunch in Week 1)
+              `
             },
             dinner: {
               meal: "Tomato pappu with rice",
               difficulty: "E",
-              recipe: "<p>Tomato pappu instructions</p>",
-              ingredients: ["toor dal", "tomatoes", "spices"]
+              recipe: `
+                <strong>Ingredients:</strong>
+                <ul>
+                  <li>Toor dal, tomatoes</li>
+                </ul>
+                <strong>Steps:</strong>
+                <ol>
+                  <li>Cook dal & tomatoes, temper.</li>
+                </ol>
+              `
             }
           },
           {
             day: "Wednesday",
             breakfast: {
-              meal: "Cornflakes + Milk",
-              difficulty: "VE",
-              recipe: "<p>Pour cornflakes in a bowl, add milk, optional fruits.</p>",
-              ingredients: ["1 cup cornflakes", "1/2 cup milk", "optional fruit"]
+              meal: "Idli",
+              difficulty: "M",
+              recipe: `
+                (See Tuesday breakfast in Week 1)
+              `
             },
             lunch: {
-              meal: "Spinach Dal & Rice",
+              meal: "Palak pappu with rice",
               difficulty: "M",
-              recipe: "<p>Cook dal with spinach (palak), add spices.</p>",
-              ingredients: ["1 cup toor dal", "spinach", "spices"]
+              recipe: `
+                <strong>Steps similar to Palak pappu above</strong>
+              `
             },
             dinner: {
-              meal: "Chapati & Paneer Bhurji",
+              meal: "Idli",
               difficulty: "M",
-              recipe: "<p>Sauté grated paneer with onions/tomatoes/spices.</p>",
-              ingredients: ["paneer", "onion", "tomato"]
+              recipe: `
+                (Same as Idli)
+              `
             }
           },
           {
             day: "Thursday",
             breakfast: {
-              meal: "Smoothie",
+              meal: "Protein shake + Fruits",
               difficulty: "VE",
-              recipe: "<p>Blend fruit, yogurt, honey.</p>",
-              ingredients: ["banana/berries", "1 cup yogurt", "honey"]
+              recipe: `
+                <strong>Shake:</strong> Blend protein powder & fruits.
+              `
             },
             lunch: {
-              meal: "Pasta with Veggies",
+              meal: "Paneer butter masala with naan/roti",
               difficulty: "E",
-              recipe: "<p>Boil pasta, stir-fry veggies, mix sauce.</p>",
-              ingredients: ["pasta", "bell peppers", "tomato sauce"]
+              recipe: `
+                <strong>Ingredients:</strong>
+                <ul>
+                  <li>Paneer</li>
+                  <li>Tomato puree, cream</li>
+                </ul>
+                <strong>Steps:</strong>
+                <ol>
+                  <li>Sauté spices in butter, add puree & paneer.</li>
+                </ol>
+              `
             },
             dinner: {
-              meal: "Curd Rice",
-              difficulty: "VE",
-              recipe: "<p>Mix cooked rice with yogurt, add tempering.</p>",
-              ingredients: ["cooked rice", "yogurt", "curry leaves"]
+              meal: "Tamarind rice",
+              difficulty: "E",
+              recipe: `
+                (See Thursday lunch in Week 1 for tamarind rice steps)
+              `
             }
           },
           {
             day: "Friday",
             breakfast: {
-              meal: "Dosa",
-              difficulty: "M",
-              recipe: "<p>Use fermented dosa batter, cook on a hot tawa.</p>",
-              ingredients: ["dosa batter", "oil"]
+              meal: "Starbucks pesto sandwich",
+              difficulty: "VE",
+              recipe: `
+                (Same as above)
+              `
             },
             lunch: {
-              meal: "Channa Masala & Rice",
-              difficulty: "M",
-              recipe: "<p>Boil chickpeas, add onion-tomato gravy.</p>",
-              ingredients: ["1 cup chickpeas", "onion", "tomato", "spices"]
+              meal: "Pasta with veggies",
+              difficulty: "E",
+              recipe: `
+                <strong>Ingredients:</strong>
+                <ul>
+                  <li>Pasta</li>
+                  <li>Mixed veggies</li>
+                </ul>
+                <strong>Steps:</strong>
+                <ol>
+                  <li>Boil pasta, sauté veggies, mix.</li>
+                </ol>
+              `
             },
             dinner: {
-              meal: "Lemon Rice",
+              meal: "Pizza",
+              difficulty: "VE",
+              recipe: `
+                (See Friday dinner in Week 1)
+              `
+            }
+          },
+          {
+            day: "Saturday",
+            breakfast: {
+              meal: "Cereal + Avocado toast",
+              difficulty: "VE",
+              recipe: `
+                <strong>Cereal:</strong> Bowl with milk.
+                <strong>Avocado Toast:</strong> Mash avocado, spread on toast.
+              `
+            },
+            lunch: {
+              meal: "Tomato curry with rice",
               difficulty: "E",
-              recipe: "<p>Mix cooked rice with lemon juice, mustard seeds, peanuts.</p>",
-              ingredients: ["cooked rice", "lemon juice", "peanuts"]
+              recipe: `
+                (See Monday lunch in Week 1)
+              `
+            },
+            dinner: {
+              meal: "Pickle rice + Bhindi curry",
+              difficulty: "VE",
+              recipe: `
+                <strong>Pickle Rice:</strong> Mix pickle in rice.
+                <strong>Bhindi curry:</strong> Sauté okra with onions.
+              `
+            }
+          },
+          {
+            day: "Sunday",
+            breakfast: {
+              meal: "Upma or Dosa",
+              difficulty: "E",
+              recipe: `
+                (See Sunday breakfast in Week 1)
+              `
+            },
+            lunch: {
+              meal: "Aloo fry with rice",
+              difficulty: "E",
+              recipe: `
+                <strong>Steps:</strong>
+                <ol>
+                  <li>Cube potatoes, fry till golden.</li>
+                </ol>
+              `
+            },
+            dinner: {
+              meal: "Dosa with sambar",
+              difficulty: "T",
+              recipe: `
+                (Same as Wednesday dinner in Week 1)
+              `
             }
           }
         ]
       };
     }
 
+    // Initialize data from localStorage or default
+    let mealPlanData = JSON.parse(localStorage.getItem('mealPlanData')) || getDefaultMealPlanData();
+
     /***********************************************************
-     * 2. Build Tables + DOM Ready
+     * 2. Build Tables + On DOM Load
      **********************************************************/
-    let quill;  // Our Quill instance
-    let currentDay, currentMealType, currentWeek;  // track what user is viewing/editing
+    let quill;
+    let currentDay, currentMealType, currentWeek; // track user clicks
 
     window.addEventListener('DOMContentLoaded', () => {
       buildTables();
@@ -608,12 +892,10 @@
       });
     }
 
-    /**
-     * BUILD ROWS
-     *  1) Day cell => onclick to show Day Ingredients
-     *  2) Breakfast, lunch, dinner => onclick to show Meal Recipe
-     */
+    // Create a single table row from day data
     function buildRow(dayObj, week) {
+      // "Day" cell => openDayIngredients
+      // "Breakfast/Lunch/Dinner" => openRecipeModal
       return `
         <tr>
           <td class="clickable" onclick="openDayIngredients('${dayObj.day}', '${week}')">
@@ -633,6 +915,7 @@
     }
 
     function renderMealCell(mealObj) {
+      if (!mealObj) return '';
       return `
         ${mealObj.meal}
         <span class="difficulty ${mealObj.difficulty}">
@@ -642,7 +925,7 @@
     }
 
     /***********************************************************
-     * 3. TABS
+     * 3. Tabs
      **********************************************************/
     function setupTabs() {
       const tabButtons = document.querySelectorAll('.tab');
@@ -650,11 +933,11 @@
 
       tabButtons.forEach((button) => {
         button.addEventListener('click', () => {
-          // Remove active class from all tabs & containers
+          // Remove active from all tabs & containers
           tabButtons.forEach((btn) => btn.classList.remove('active'));
           containers.forEach((cont) => cont.classList.remove('active'));
 
-          // Add active to the clicked tab & corresponding container
+          // Add active to clicked tab & corresponding container
           button.classList.add('active');
           const selectedTab = button.getAttribute('data-tab');
           document.getElementById(selectedTab).classList.add('active');
@@ -663,29 +946,40 @@
     }
 
     /***********************************************************
-     * 4. SHOW DAY INGREDIENTS
+     * 4. Show Day Ingredients
      **********************************************************/
     function openDayIngredients(day, week) {
-      // Find the day object
       const dayObj = mealPlanData[week].find(d => d.day === day);
       if (!dayObj) return;
 
-      // Combine all ingredients from breakfast, lunch, dinner
+      // Collect ingredients from breakfast, lunch, dinner
       let combined = [];
       ["breakfast", "lunch", "dinner"].forEach(mealType => {
+        if (dayObj[mealType] && dayObj[mealType].recipe) {
+          // If you track ingredients in separate arrays, you can do that here
+        }
+      });
+
+      // If you want actual "ingredients" arrays, 
+      // you'd store them in dayObj[mealType].ingredients 
+      // like your previous approach, and combine them.
+
+      // For now, let's combine from dayObj[mealType].ingredients if it exists:
+      let finalIngredients = [];
+      ["breakfast", "lunch", "dinner"].forEach(mealType => {
         if (dayObj[mealType] && dayObj[mealType].ingredients) {
-          combined.push(...dayObj[mealType].ingredients);
+          finalIngredients.push(...dayObj[mealType].ingredients);
         }
       });
 
       const dayTitle = document.getElementById('day-title');
-      dayTitle.textContent = `All Ingredients for ${day}`; 
+      dayTitle.textContent = `All Ingredients for ${day}`;
 
       const dayList = document.getElementById('day-ingredients-list');
-      if (combined.length === 0) {
+      if (finalIngredients.length === 0) {
         dayList.innerHTML = `<p>No ingredients listed.</p>`;
       } else {
-        dayList.innerHTML = `<ul>${combined.map(item => `<li>${item}</li>`).join('')}</ul>`;
+        dayList.innerHTML = `<ul>${finalIngredients.map(item => `<li>${item}</li>`).join('')}</ul>`;
       }
 
       document.getElementById('day-modal').style.display = 'flex';
@@ -696,7 +990,7 @@
     }
 
     /***********************************************************
-     * 5. VIEWING THE RECIPE (Recipe Modal)
+     * 5. Viewing the Recipe (Recipe Modal)
      **********************************************************/
     function openRecipeModal(day, mealType, week) {
       currentDay = day;
@@ -705,14 +999,21 @@
 
       const dayObj = mealPlanData[week].find(d => d.day === day);
       if (!dayObj) return;
-      const mealObj = dayObj[mealType];
 
+      const mealObj = dayObj[mealType];
+      if (!mealObj) return;
+
+      // Set recipe title
       document.getElementById('recipe-title').textContent = mealObj.meal;
+
+      // Show the recipe content
       const recipeDiv = document.getElementById('recipe-content');
       recipeDiv.innerHTML = mealObj.recipe;
 
+      // Show modal
       document.getElementById('recipe-modal').style.display = 'flex';
 
+      // Edit button
       document.getElementById('edit-button').onclick = () => {
         closeModal();
         openEditModal();
@@ -724,18 +1025,23 @@
     }
 
     /***********************************************************
-     * 6. EDITING THE MEAL (Edit Modal w/ Quill)
+     * 6. Editing the Meal (Edit Modal)
      **********************************************************/
     function openEditModal() {
       const dayObj = mealPlanData[currentWeek].find(d => d.day === currentDay);
       if (!dayObj) return;
+
       const mealObj = dayObj[currentMealType];
+      if (!mealObj) return;
 
       document.getElementById('edit-meal-name').value = mealObj.meal;
       document.getElementById('edit-difficulty').value = mealObj.difficulty;
       quill.root.innerHTML = mealObj.recipe;
 
+      // Show edit modal
       document.getElementById('edit-modal').style.display = 'flex';
+
+      // When we click "Save"
       document.getElementById('save-button').onclick = saveMealChanges;
     }
 
@@ -746,24 +1052,32 @@
     function saveMealChanges() {
       const dayObj = mealPlanData[currentWeek].find(d => d.day === currentDay);
       if (!dayObj) return;
-      const mealObj = dayObj[currentMealType];
 
+      const mealObj = dayObj[currentMealType];
+      if (!mealObj) return;
+
+      // Gather updates
       const updatedName = document.getElementById('edit-meal-name').value;
       const updatedDiff = document.getElementById('edit-difficulty').value;
-      const updatedRecipe = quill.root.innerHTML;
+      const updatedRecipe = quill.root.innerHTML; // Quill’s HTML
 
+      // Apply changes
       mealObj.meal = updatedName;
       mealObj.difficulty = updatedDiff;
       mealObj.recipe = updatedRecipe;
 
+      // Store in localStorage
       localStorage.setItem('mealPlanData', JSON.stringify(mealPlanData));
 
+      // Rebuild tables to show updated meal
       buildTables();
+
+      // Close the edit modal
       closeEditModal();
     }
 
     /***********************************************************
-     * 7. QUILL EDITOR SETUP
+     * 7. Quill Editor Setup
      **********************************************************/
     function setupQuillEditor() {
       quill = new Quill('#quill-editor', {
@@ -780,13 +1094,14 @@
     }
 
     /***********************************************************
-     * 8. CLICK OUTSIDE TO CLOSE MODALS
+     * 8. Clicking Outside to Close Modals
      **********************************************************/
     function attachModalClickOutside() {
       window.addEventListener('click', (e) => {
         const dayModal = document.getElementById('day-modal');
         const recipeModal = document.getElementById('recipe-modal');
         const editModal = document.getElementById('edit-modal');
+
         if (e.target === dayModal) {
           dayModal.style.display = 'none';
         } else if (e.target === recipeModal) {
@@ -798,7 +1113,7 @@
     }
 
     /***********************************************************
-     * 9. NIGHT MODE TOGGLE
+     * 9. Night Mode Toggle
      **********************************************************/
     function setupNightModeToggle() {
       const toggleBtn = document.getElementById('theme-toggle');
