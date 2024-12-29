@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Meal Plan - Day Ingredients</title>
+  <title>Meal Plan - Day Ingredients (Extended)</title>
   <!-- Quill Snow Theme -->
   <link
     href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
@@ -267,7 +267,7 @@
   <!-- Toggle Night Mode Button -->
   <button id="theme-toggle">Toggle Night Mode</button>
 
-  <h1>Meal Plan - Day Ingredients Feature</h1>
+  <h1>Meal Plan - Day Ingredients (5 Days Each Week)</h1>
 
   <!-- Tabs -->
   <div class="tabs">
@@ -305,11 +305,7 @@
     </table>
   </div>
 
-  <!-- 
-    NEW MODAL: Day Ingredients 
-    When user clicks the "day" cell, we show 
-    all combined ingredients for breakfast, lunch, dinner
-  -->
+  <!-- MODAL: Day Ingredients (when user clicks the "day" cell) -->
   <div id="day-modal" class="modal">
     <div class="modal-content">
       <button class="close-btn" onclick="closeDayModal()">✖</button>
@@ -318,7 +314,7 @@
     </div>
   </div>
 
-  <!-- RECIPE MODAL (View) -->
+  <!-- MODAL: Recipe (view mode) -->
   <div id="recipe-modal" class="modal">
     <div class="modal-content">
       <button class="close-btn" onclick="closeModal()">✖</button>
@@ -328,7 +324,7 @@
     </div>
   </div>
 
-  <!-- EDIT MODAL (Quill Editor) -->
+  <!-- MODAL: Edit (Quill Editor) -->
   <div id="edit-modal" class="modal">
     <div class="modal-content">
       <button class="close-btn" onclick="closeEditModal()">✖</button>
@@ -361,6 +357,9 @@
      **********************************************************/
     let mealPlanData = JSON.parse(localStorage.getItem('mealPlanData')) || getDefaultData();
 
+    // 
+    // Add Monday through Friday for each week for demonstration
+    //
     function getDefaultData() {
       return {
         week1: [
@@ -370,10 +369,6 @@
               meal: "Cereal + Fruits",
               difficulty: "VE",
               recipe: "<h2>Ingredients</h2><ul><li>Cereal</li><li>Milk</li><li>Fruits</li></ul><p>Combine and enjoy!</p>",
-              /* 
-                "ingredients" array: list them separately so we can 
-                easily show them for the day 
-              */
               ingredients: ["1 cup cereal", "1/2 cup milk", "1/2 cup fruits"]
             },
             lunch: {
@@ -409,8 +404,70 @@
               recipe: "<p>Idli repeated for dinner</p>",
               ingredients: ["idli batter"]
             }
+          },
+          {
+            day: "Wednesday",
+            breakfast: {
+              meal: "Poha",
+              difficulty: "E",
+              recipe: "<p>Poha recipe... rinse poha and sauté with spices.</p>",
+              ingredients: ["1 cup poha", "onions", "peanuts"]
+            },
+            lunch: {
+              meal: "Dal Tadka",
+              difficulty: "E",
+              recipe: "<p>Dal Tadka recipe... boil lentils, add tadka of spices.</p>",
+              ingredients: ["1 cup toor dal", "garlic", "spices"]
+            },
+            dinner: {
+              meal: "Roti & Mixed Veg Curry",
+              difficulty: "M",
+              recipe: "<p>Make dough for rotis, sauté mixed veggies.</p>",
+              ingredients: ["2 cups wheat flour", "mixed veggies", "spices"]
+            }
+          },
+          {
+            day: "Thursday",
+            breakfast: {
+              meal: "Bread Omelette",
+              difficulty: "M",
+              recipe: "<p>Beat eggs, dip bread, cook on a pan.</p>",
+              ingredients: ["2 eggs", "2 slices bread", "oil/butter"]
+            },
+            lunch: {
+              meal: "Chickpea Salad",
+              difficulty: "VE",
+              recipe: "<p>Mix boiled chickpeas with chopped veggies.</p>",
+              ingredients: ["1 cup boiled chickpeas", "tomato", "cucumber"]
+            },
+            dinner: {
+              meal: "Paneer Butter Masala & Naan",
+              difficulty: "M",
+              recipe: "<p>Paneer cubes simmered in tomato-cream sauce.</p>",
+              ingredients: ["200g paneer", "tomatoes", "cream"]
+            }
+          },
+          {
+            day: "Friday",
+            breakfast: {
+              meal: "Upma or Dosa",
+              difficulty: "E",
+              recipe: "<p>Use leftover upma or dosa batter from earlier in the week.</p>",
+              ingredients: ["semolina or dosa batter"]
+            },
+            lunch: {
+              meal: "Egg Curry & Rice",
+              difficulty: "E",
+              recipe: "<p>Boil eggs, make curry with onions/tomatoes/spices.</p>",
+              ingredients: ["4 eggs", "1 onion", "1 tomato"]
+            },
+            dinner: {
+              meal: "Tamarind Rice",
+              difficulty: "E",
+              recipe: "<p>Mix tamarind paste with spices into cooked rice.</p>",
+              ingredients: ["cooked rice", "tamarind paste", "spices"]
+            }
           }
-          // ... Add more days for week1 if desired
         ],
         week2: [
           {
@@ -454,8 +511,70 @@
               recipe: "<p>Tomato pappu instructions</p>",
               ingredients: ["toor dal", "tomatoes", "spices"]
             }
+          },
+          {
+            day: "Wednesday",
+            breakfast: {
+              meal: "Cornflakes + Milk",
+              difficulty: "VE",
+              recipe: "<p>Pour cornflakes in a bowl, add milk, optional fruits.</p>",
+              ingredients: ["1 cup cornflakes", "1/2 cup milk", "optional fruit"]
+            },
+            lunch: {
+              meal: "Spinach Dal & Rice",
+              difficulty: "M",
+              recipe: "<p>Cook dal with spinach (palak), add spices.</p>",
+              ingredients: ["1 cup toor dal", "spinach", "spices"]
+            },
+            dinner: {
+              meal: "Chapati & Paneer Bhurji",
+              difficulty: "M",
+              recipe: "<p>Sauté grated paneer with onions/tomatoes/spices.</p>",
+              ingredients: ["paneer", "onion", "tomato"]
+            }
+          },
+          {
+            day: "Thursday",
+            breakfast: {
+              meal: "Smoothie",
+              difficulty: "VE",
+              recipe: "<p>Blend fruit, yogurt, honey.</p>",
+              ingredients: ["banana/berries", "1 cup yogurt", "honey"]
+            },
+            lunch: {
+              meal: "Pasta with Veggies",
+              difficulty: "E",
+              recipe: "<p>Boil pasta, stir-fry veggies, mix sauce.</p>",
+              ingredients: ["pasta", "bell peppers", "tomato sauce"]
+            },
+            dinner: {
+              meal: "Curd Rice",
+              difficulty: "VE",
+              recipe: "<p>Mix cooked rice with yogurt, add tempering.</p>",
+              ingredients: ["cooked rice", "yogurt", "curry leaves"]
+            }
+          },
+          {
+            day: "Friday",
+            breakfast: {
+              meal: "Dosa",
+              difficulty: "M",
+              recipe: "<p>Use fermented dosa batter, cook on a hot tawa.</p>",
+              ingredients: ["dosa batter", "oil"]
+            },
+            lunch: {
+              meal: "Channa Masala & Rice",
+              difficulty: "M",
+              recipe: "<p>Boil chickpeas, add onion-tomato gravy.</p>",
+              ingredients: ["1 cup chickpeas", "onion", "tomato", "spices"]
+            },
+            dinner: {
+              meal: "Lemon Rice",
+              difficulty: "E",
+              recipe: "<p>Mix cooked rice with lemon juice, mustard seeds, peanuts.</p>",
+              ingredients: ["cooked rice", "lemon juice", "peanuts"]
+            }
           }
-          // ... Add more days for week2 if desired
         ]
       };
     }
@@ -491,7 +610,6 @@
 
     /**
      * BUILD ROWS
-     * 
      *  1) Day cell => onclick to show Day Ingredients
      *  2) Breakfast, lunch, dinner => onclick to show Meal Recipe
      */
@@ -545,7 +663,7 @@
     }
 
     /***********************************************************
-     * 4. SHOW DAY INGREDIENTS (New Feature)
+     * 4. SHOW DAY INGREDIENTS
      **********************************************************/
     function openDayIngredients(day, week) {
       // Find the day object
@@ -556,12 +674,10 @@
       let combined = [];
       ["breakfast", "lunch", "dinner"].forEach(mealType => {
         if (dayObj[mealType] && dayObj[mealType].ingredients) {
-          // push them into our combined array
           combined.push(...dayObj[mealType].ingredients);
         }
       });
 
-      // Now we can display them as a list
       const dayTitle = document.getElementById('day-title');
       dayTitle.textContent = `All Ingredients for ${day}`; 
 
@@ -572,7 +688,6 @@
         dayList.innerHTML = `<ul>${combined.map(item => `<li>${item}</li>`).join('')}</ul>`;
       }
 
-      // Show the day modal
       document.getElementById('day-modal').style.display = 'flex';
     }
 
@@ -584,7 +699,6 @@
      * 5. VIEWING THE RECIPE (Recipe Modal)
      **********************************************************/
     function openRecipeModal(day, mealType, week) {
-      // store references
       currentDay = day;
       currentMealType = mealType;
       currentWeek = week;
@@ -593,18 +707,13 @@
       if (!dayObj) return;
       const mealObj = dayObj[mealType];
 
-      // set popup title
       document.getElementById('recipe-title').textContent = mealObj.meal;
-      // inject HTML into #recipe-content
       const recipeDiv = document.getElementById('recipe-content');
       recipeDiv.innerHTML = mealObj.recipe;
 
-      // show the modal
       document.getElementById('recipe-modal').style.display = 'flex';
 
-      // wire up the edit button
       document.getElementById('edit-button').onclick = () => {
-        // close recipe modal, open edit modal
         closeModal();
         openEditModal();
       };
@@ -615,22 +724,18 @@
     }
 
     /***********************************************************
-     * 6. EDITING THE MEAL (Edit Modal with Quill)
+     * 6. EDITING THE MEAL (Edit Modal w/ Quill)
      **********************************************************/
     function openEditModal() {
       const dayObj = mealPlanData[currentWeek].find(d => d.day === currentDay);
       if (!dayObj) return;
       const mealObj = dayObj[currentMealType];
 
-      // populate fields
       document.getElementById('edit-meal-name').value = mealObj.meal;
       document.getElementById('edit-difficulty').value = mealObj.difficulty;
-      quill.root.innerHTML = mealObj.recipe; // display the existing recipe content
+      quill.root.innerHTML = mealObj.recipe;
 
-      // show edit modal
       document.getElementById('edit-modal').style.display = 'flex';
-
-      // handle save
       document.getElementById('save-button').onclick = saveMealChanges;
     }
 
@@ -643,29 +748,22 @@
       if (!dayObj) return;
       const mealObj = dayObj[currentMealType];
 
-      // gather updated fields
       const updatedName = document.getElementById('edit-meal-name').value;
       const updatedDiff = document.getElementById('edit-difficulty').value;
-      const updatedRecipe = quill.root.innerHTML;  // Quill's HTML content
+      const updatedRecipe = quill.root.innerHTML;
 
-      // store
       mealObj.meal = updatedName;
       mealObj.difficulty = updatedDiff;
       mealObj.recipe = updatedRecipe;
 
-      // NOTE: If you also want to let users edit the ingredients array,
-      // you could add a small form or text area to handle that here.
-
-      // save to localStorage
       localStorage.setItem('mealPlanData', JSON.stringify(mealPlanData));
 
-      // rebuild table & close modal
       buildTables();
       closeEditModal();
     }
 
     /***********************************************************
-     * 7. Quill Editor Setup
+     * 7. QUILL EDITOR SETUP
      **********************************************************/
     function setupQuillEditor() {
       quill = new Quill('#quill-editor', {
@@ -682,7 +780,7 @@
     }
 
     /***********************************************************
-     * 8. Click Outside to Close Modals
+     * 8. CLICK OUTSIDE TO CLOSE MODALS
      **********************************************************/
     function attachModalClickOutside() {
       window.addEventListener('click', (e) => {
@@ -700,7 +798,7 @@
     }
 
     /***********************************************************
-     * 9. Night Mode Toggle
+     * 9. NIGHT MODE TOGGLE
      **********************************************************/
     function setupNightModeToggle() {
       const toggleBtn = document.getElementById('theme-toggle');
